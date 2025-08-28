@@ -244,12 +244,12 @@ export const FilterResults = styled.div`
 // Button components
 export const Button = styled.button<{
   variant?:
-  | "default"
-  | "destructive"
-  | "outline"
-  | "secondary"
-  | "ghost"
-  | "link";
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
   size?: "default" | "sm" | "lg" | "icon";
 }>`
   display: inline-flex;
@@ -415,20 +415,20 @@ export const SearchInput = styled.input`
   padding-left: 48px;
   height: 48px;
   width: 100%;
-  background-color: hsl(var(--background));
-  border: 1px solid hsl(var(--border));
+  background-color: #ffffff;
+  border: 2px solid #e2e8f0;
   border-radius: 16px;
-  color: hsl(var(--foreground));
+  color: #1a1a1a;
   font-size: 18px;
 
   &:focus {
-    box-shadow: 0 0 0 2px hsl(var(--primary));
-    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #3b82f6;
     outline: none;
   }
 
   &::placeholder {
-    color: hsl(var(--muted-foreground));
+    color: #6b7280;
   }
 
   &:disabled {
@@ -443,49 +443,74 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const SearchButton = styled(Button)`
+// Consistent button styling for Search and Refresh actions
+export const ControlButton = styled(Button)<{
+  variant?: "primary" | "secondary";
+}>`
   height: 48px;
   padding: 0 24px;
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
-  border: 1px solid hsl(var(--border));
   border-radius: 8px;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
   min-width: 120px;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 2px solid;
 
-  &:hover:not(:disabled) {
-    background-color: hsl(var(--accent));
-    color: hsl(var(--accent-foreground));
-    border-color: hsl(var(--border));
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  }
+  ${(props) => {
+    if (props.variant === "primary") {
+      return css`
+        background-color: #6b7280;
+        color: #ffffff;
+        border-color: #6b7280;
+        box-shadow: 0 2px 8px rgba(107, 114, 128, 0.3);
+
+        &:hover:not(:disabled) {
+          background-color: #4b5563;
+          border-color: #4b5563;
+          box-shadow: 0 4px 16px rgba(107, 114, 128, 0.4);
+          transform: translateY(-1px);
+        }
+      `;
+    }
+    return css`
+      background-color: #9ca3af;
+      color: #ffffff;
+      border-color: #9ca3af;
+      box-shadow: 0 2px 8px rgba(156, 163, 175, 0.3);
+
+      &:hover:not(:disabled) {
+        background-color: #6b7280;
+        border-color: #6b7280;
+        box-shadow: 0 4px 16px rgba(156, 163, 175, 0.4);
+        transform: translateY(-1px);
+      }
+    `;
+  }}
 
   &:focus:not(:disabled) {
     outline: none;
-    box-shadow: 0 0 0 2px hsl(var(--ring));
+    box-shadow: 0 0 0 3px rgba(107, 114, 128, 0.3);
     outline-offset: 2px;
   }
 
-  &:active:not(:disabled) {
-    background-color: hsl(var(--accent));
-    color: hsl(var(--accent-foreground));
-  }
-
   &:disabled {
-    background-color: hsl(var(--muted));
-    color: hsl(var(--muted-foreground));
+    background-color: #e5e7eb;
+    color: #9ca3af;
     cursor: not-allowed;
     opacity: 0.6;
-    border-color: hsl(var(--border));
+    border-color: #e5e7eb;
     box-shadow: none;
+    transform: none;
   }
 `;
+
+// Keep SearchButton for backward compatibility but use ControlButton styling
+export const SearchButton = styled(ControlButton)``;
+
+export const RefreshButton = styled(ControlButton)``;
 
 // Error and loading states
 export const ErrorContainer = styled.div`
@@ -519,26 +544,28 @@ export const FilterDropdownSelectTrigger = styled.button`
   height: 40px;
   width: 100%;
   border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  border: 2px solid #d1d5db;
   background-color: #ffffff;
   padding: 0 12px;
   font-size: 14px;
   color: #374151;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px #2563eb;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
     outline-offset: 2px;
   }
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: #f8fafc;
     color: #1f2937;
-    border-color: #d1d5db;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    transform: translateY(-1px);
   }
 
   &:disabled {
@@ -633,18 +660,20 @@ export const TimeLineSelectTrigger = styled.button<{ theme?: any }>`
   justify-content: space-between;
   height: 40px;
   width: 100%;
-  border-radius: ${({ theme }) => theme?.borderRadius?.lg || '8px'};
-  border: 1px solid ${({ theme }) => theme?.colors?.input || 'hsl(var(--input))'};
-  background-color: ${({ theme }) => theme?.colors?.background || 'hsl(var(--background))'};
-  padding: 0 ${({ theme }) => theme?.spacing?.[3] || '12px'};
-  font-size: ${({ theme }) => theme?.fontSizes?.sm || '14px'};
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  border-radius: 8px;
+  border: 2px solid #d1d5db;
+  background-color: #ffffff;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #374151;
   cursor: pointer;
-  transition: ${({ theme }) => theme?.transitions?.all || 'all 0.2s ease'};
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px ${({ theme }) => theme?.colors?.ring || 'hsl(var(--ring))'};
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
     outline-offset: 2px;
   }
 
@@ -654,14 +683,18 @@ export const TimeLineSelectTrigger = styled.button<{ theme?: any }>`
   }
 
   &:hover {
-    background-color: ${({ theme }) => theme?.colors?.accent || 'hsl(var(--accent))'};
-    color: ${({ theme }) => theme?.colors?.accentForeground || 'hsl(var(--accent-foreground))'};
+    background-color: #f8fafc;
+    color: #1f2937;
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    transform: translateY(-1px);
   }
 `;
 
 export const TimeLineSelectValue = styled.span<{ theme?: any }>`
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
-  font-weight: ${({ theme }) => theme?.fontWeights?.medium || '500'};
+  color: ${({ theme }) =>
+    theme?.colors?.foreground || "hsl(var(--foreground))"};
+  font-weight: ${({ theme }) => theme?.fontWeights?.medium || "500"};
 `;
 
 export const TimeLineSelectContent = styled.div<{ theme?: any }>`
@@ -673,12 +706,16 @@ export const TimeLineSelectContent = styled.div<{ theme?: any }>`
   max-height: 384px;
   min-width: 200px;
   overflow-y: auto;
-  border-radius: ${({ theme }) => theme?.borderRadius?.lg || '8px'};
-  border: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
-  background-color: ${({ theme }) => theme?.colors?.card || 'hsl(var(--card))'};
-  color: ${({ theme }) => theme?.colors?.cardForeground || 'hsl(var(--card-foreground))'};
-  box-shadow: ${({ theme }) => theme?.shadows?.xl || '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'};
-  margin-top: ${({ theme }) => theme?.spacing?.[1] || '4px'};
+  border-radius: ${({ theme }) => theme?.borderRadius?.lg || "8px"};
+  border: 1px solid
+    ${({ theme }) => theme?.colors?.border || "hsl(var(--border))"};
+  background-color: ${({ theme }) => theme?.colors?.card || "hsl(var(--card))"};
+  color: ${({ theme }) =>
+    theme?.colors?.cardForeground || "hsl(var(--card-foreground))"};
+  box-shadow: ${({ theme }) =>
+    theme?.shadows?.xl ||
+    "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"};
+  margin-top: ${({ theme }) => theme?.spacing?.[1] || "4px"};
   animation: fadeIn 0.2s ease-out;
   isolation: isolate;
 
@@ -697,21 +734,24 @@ export const TimeLineSelectContent = styled.div<{ theme?: any }>`
 export const TimeLineInput = styled.input<{ theme?: any }>`
   width: 100%;
   padding: 8px 12px;
-  background-color: ${({ theme }) => theme?.colors?.background || 'hsl(var(--background))'};
-  border: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
+  background-color: #ffffff;
+  border: 2px solid #d1d5db;
   border-radius: 6px;
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  color: #374151;
   font-size: 14px;
-  font-family: ${({ theme }) => theme?.fonts?.mono || 'monospace'};
+  font-family:
+    ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+    "DejaVu Sans Mono", monospace;
 
   &:focus {
-    box-shadow: 0 0 0 2px ${({ theme }) => theme?.colors?.primary || 'hsl(var(--primary))'};
-    border-color: ${({ theme }) => theme?.colors?.primary || 'hsl(var(--primary))'};
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    border-color: #3b82f6;
     outline: none;
   }
 
   &::placeholder {
-    color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+    color: ${({ theme }) =>
+      theme?.colors?.mutedForeground || "hsl(var(--muted-foreground))"};
   }
 `;
 
@@ -734,7 +774,7 @@ export const TimeLineButton = styled.button<{
   outline: none;
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme?.colors?.ring || 'hsl(var(--ring))'};
+    outline: 2px solid #3b82f6;
     outline-offset: 2px;
   }
 
@@ -747,20 +787,25 @@ export const TimeLineButton = styled.button<{
     switch (props.variant) {
       case "outline":
         return css`
-          border: 1px solid ${props.theme?.colors?.border || 'hsl(var(--border))'};
-          background-color: ${props.theme?.colors?.background || 'hsl(var(--background))'};
-          color: ${props.theme?.colors?.foreground || 'hsl(var(--foreground))'};
+          border: 2px solid #d1d5db;
+          background-color: #ffffff;
+          color: #374151;
           &:hover {
-            background-color: ${props.theme?.colors?.accent || 'hsl(var(--accent))'};
-            color: ${props.theme?.colors?.accentForeground || 'hsl(var(--accent-foreground))'};
+            background-color: #f3f4f6;
+            border-color: #9ca3af;
+            color: #1f2937;
           }
         `;
       default:
         return css`
-          background-color: ${props.theme?.colors?.primary || 'hsl(var(--primary))'};
-          color: ${props.theme?.colors?.primaryForeground || 'hsl(var(--primary-foreground))'};
+          background-color: #3b82f6;
+          color: #ffffff;
+          border: 2px solid #3b82f6;
           &:hover {
-            background-color: ${props.theme?.colors?.primary ? `${props.theme.colors.primary} / 0.9` : 'hsl(var(--primary) / 0.9)'};
+            background-color: #2563eb;
+            border-color: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
           }
         `;
     }
@@ -771,14 +816,17 @@ export const TimeLineButton = styled.button<{
       case "sm":
         return css`
           height: 36px;
-          border-radius: ${props.theme?.borderRadius?.md || '6px'};
-          padding: 0 ${props.theme?.spacing?.[3] || '12px'};
-          font-size: ${props.theme?.fontSizes?.xs || '12px'};
+          border-radius: 6px;
+          padding: 0 16px;
+          font-size: 13px;
+          font-weight: 600;
         `;
       default:
         return css`
           height: 40px;
-          padding: 0 ${props.theme?.spacing?.[4] || '16px'};
+          padding: 0 20px;
+          font-size: 14px;
+          font-weight: 600;
         `;
     }
   }}
@@ -787,55 +835,67 @@ export const TimeLineButton = styled.button<{
 `;
 
 export const TimeLineFilterContent = styled(TimeLineSelectContent)`
-  width: 380px;
-  padding: ${({ theme }) => theme?.spacing?.[4] || '16px'};
+  width: 420px;
+  padding: 20px;
   z-index: 20000;
   isolation: isolate;
   position: absolute;
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
   @media (max-width: 768px) {
-    width: 300px;
-    min-width: 280px;
+    width: 320px;
+    min-width: 300px;
   }
 `;
 
 export const TimeLineFilterSection = styled.div<{ theme?: any }>`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme?.spacing?.[4] || '16px'};
+  gap: 20px;
 `;
 
 export const TimeLineFilterLabel = styled.label<{ theme?: any }>`
-  font-size: ${({ theme }) => theme?.fontSizes?.sm || '14px'};
-  font-weight: ${({ theme }) => theme?.fontWeights?.medium || '500'};
-  margin-bottom: ${({ theme }) => theme?.spacing?.[2] || '8px'};
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
   display: block;
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  color: #374151;
+  letter-spacing: -0.025em;
 `;
 
 export const TimeLineFilterInputGrid = styled.div<{ theme?: any }>`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: ${({ theme }) => theme?.spacing?.[2] || '8px'};
+  gap: 12px;
 `;
 
 export const TimeLineFilterNote = styled.div<{ theme?: any }>`
-  font-size: ${({ theme }) => theme?.fontSizes?.xs || '12px'};
-  color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+  font-size: 12px;
+  color: #6b7280;
   text-align: center;
+  background-color: #f3f4f6;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
 `;
 
 export const TimeLineFilterButtonGrid = styled.div<{ theme?: any }>`
   display: flex;
-  gap: ${({ theme }) => theme?.spacing?.[2] || '8px'};
+  gap: 12px;
 `;
 
 // Filter Modal Components
 export const FilterModalBackdrop = styled.div`
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
   animation: fadeIn 0.3s ease-out;
 
   @keyframes fadeIn {
@@ -854,13 +914,13 @@ export const FilterModalContainer = styled.div<{ theme?: any }>`
   right: 0;
   width: 420px;
   height: 100vh;
-  background-color: ${({ theme }) => theme?.colors?.card || 'hsl(var(--card))'};
-  border-left: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
+  background-color: #ffffff;
+  border-left: 2px solid #e5e7eb;
   border-radius: 24px 0 0 24px;
   box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 4px 16px rgba(0, 0, 0, 0.08);
-  z-index: 1001;
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 10000;
   display: flex;
   flex-direction: column;
   animation: slideInFromRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -885,39 +945,43 @@ export const FilterModalHeader = styled.div<{ theme?: any }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, ${({ theme }) =>
-    theme?.colors?.primary || 'hsl(var(--primary))'} 0%, hsl(215, 25%, 20%) 100%);
-  color: ${({ theme }) => theme?.colors?.primaryForeground || 'hsl(var(--primary-foreground))'};
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  color: #ffffff;
   border-radius: 24px 0 0 0;
-  padding: ${({ theme }) => theme?.spacing?.[6] || '24px'};
-  border-bottom: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
+  padding: 24px 32px;
+  border-bottom: 1px solid #e5e7eb;
   flex-shrink: 0;
+  min-height: 80px;
 `;
 
 export const FilterModalContent = styled.div<{ theme?: any }>`
   flex: 1;
   overflow-y: auto;
-  padding: ${({ theme }) => theme?.spacing?.[6] || '24px'};
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme?.spacing?.[5] || '20px'};
+  gap: 24px;
+  background: #fafafa;
 `;
 
 export const FilterModalSearch = styled.div<{ theme?: any }>`
   position: relative;
-  margin-bottom: ${({ theme }) => theme?.spacing?.[4] || '16px'};
+  margin-bottom: ${({ theme }) => theme?.spacing?.[4] || "16px"};
 `;
 
 export const FilterModalListItem = styled.div<{ theme?: any }>`
-  border: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
-  border-radius: 12px;
-  background: ${({ theme }) => theme?.colors?.card || 'hsl(var(--card))'};
-  transition: all 0.2s ease;
-  margin-bottom: ${({ theme }) => theme?.spacing?.[3] || '12px'};
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  background: #ffffff;
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
   &:hover {
-    border-color: hsl(var(--primary) / 0.3);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-color: #d1d5db;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
   }
 
   &:last-child {
@@ -925,29 +989,30 @@ export const FilterModalListItem = styled.div<{ theme?: any }>`
   }
 `;
 
-export const FilterModalItemHeader = styled.div<{ isActive?: boolean; theme?: any }>`
+export const FilterModalItemHeader = styled.div<{
+  isActive?: boolean;
+  theme?: any;
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 16px 20px;
+  padding: 20px 24px;
   cursor: pointer;
-  transition: ${({ theme }) => theme?.transitions?.all || 'all 0.2s ease'};
+  transition: all 0.3s ease;
   background: none;
   border: none;
   text-align: left;
-  color: ${(props) =>
-    props.isActive
-      ? props.theme?.colors?.primary || 'hsl(var(--primary))'
-      : props.theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  color: ${(props) => (props.isActive ? "#1f2937" : "#374151")};
+  font-weight: ${(props) => (props.isActive ? "600" : "500")};
 
   &:hover {
-    background: hsl(var(--accent) / 0.5);
+    background: #f8fafc;
   }
 
   &[data-state="open"] {
-    background: hsl(var(--accent));
-    border-bottom: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
+    background: #f1f5f9;
+    border-bottom: 1px solid #e5e7eb;
   }
 `;
 
@@ -966,8 +1031,9 @@ export const FilterModalTitle = styled.h3<{ hasActive: boolean }>`
 `;
 
 export const FilterModalCount = styled.div<{ theme?: any }>`
-  background: ${({ theme }) => theme?.colors?.primary || 'hsl(var(--primary))'};
-  color: ${({ theme }) => theme?.colors?.primaryForeground || 'hsl(var(--primary-foreground))'};
+  background: ${({ theme }) => theme?.colors?.primary || "hsl(var(--primary))"};
+  color: ${({ theme }) =>
+    theme?.colors?.primaryForeground || "hsl(var(--primary-foreground))"};
   font-size: 11px;
   min-width: 20px;
   height: 20px;
@@ -979,10 +1045,14 @@ export const FilterModalCount = styled.div<{ theme?: any }>`
   font-weight: 600;
 `;
 
-export const FilterModalExpandIcon = styled.div<{ isOpen: boolean; theme?: any }>`
+export const FilterModalExpandIcon = styled.div<{
+  isOpen: boolean;
+  theme?: any;
+}>`
   transition: transform 0.2s ease;
   transform: ${(props) => (props.isOpen ? "rotate(90deg)" : "rotate(0deg)")};
-  color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+  color: ${({ theme }) =>
+    theme?.colors?.mutedForeground || "hsl(var(--muted-foreground))"};
 `;
 
 export const FilterModalOptionsContainer = styled.div`
@@ -1011,30 +1081,39 @@ export const FilterModalOptionsInner = styled.div`
   }
 `;
 
-export const FilterModalCheckbox = styled.div<{ selected: boolean; theme?: any }>`
+export const FilterModalCheckbox = styled.div<{
+  selected: boolean;
+  theme?: any;
+}>`
   width: 18px;
   height: 18px;
   border: 2px solid
     ${(props) =>
-    props.selected ? props.theme?.colors?.primary || 'hsl(var(--primary))' : props.theme?.colors?.border || 'hsl(var(--border))'};
+      props.selected
+        ? props.theme?.colors?.primary || "hsl(var(--primary))"
+        : props.theme?.colors?.border || "hsl(var(--border))"};
   border-radius: 4px;
   background-color: ${(props) =>
-    props.selected ? props.theme?.colors?.primary || 'hsl(var(--primary))' : "transparent"};
+    props.selected
+      ? props.theme?.colors?.primary || "hsl(var(--primary))"
+      : "transparent"};
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: ${({ theme }) => theme?.transitions?.all || 'all 0.2s ease'};
+  transition: ${({ theme }) => theme?.transitions?.all || "all 0.2s ease"};
 
   &:hover {
-    border-color: ${({ theme }) => theme?.colors?.primary || 'hsl(var(--primary))'};
+    border-color: ${({ theme }) =>
+      theme?.colors?.primary || "hsl(var(--primary))"};
   }
 `;
 
 export const FilterModalFooter = styled.div<{ theme?: any }>`
-  padding: ${({ theme }) => theme?.spacing?.[6] || '24px'};
-  border-top: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
+  padding: ${({ theme }) => theme?.spacing?.[6] || "24px"};
+  border-top: 1px solid
+    ${({ theme }) => theme?.colors?.border || "hsl(var(--border))"};
   flex-shrink: 0;
-  background: ${({ theme }) => theme?.colors?.card || 'hsl(var(--card))'};
+  background: ${({ theme }) => theme?.colors?.card || "hsl(var(--card))"};
 `;
 
 export const FilterModalButtonContainer = styled.div`
@@ -1062,7 +1141,7 @@ export const FilterModalButton = styled.button<{
   outline: none;
   width: 100%;
   height: 44px;
-  margin-bottom: ${({ theme }) => theme?.spacing?.[2] || '8px'};
+  margin-bottom: ${({ theme }) => theme?.spacing?.[2] || "8px"};
 
   &:hover {
     transform: translateY(-1px);
@@ -1074,7 +1153,8 @@ export const FilterModalButton = styled.button<{
   }
 
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme?.colors?.ring || 'hsl(var(--ring))'};
+    outline: 2px solid
+      ${({ theme }) => theme?.colors?.ring || "hsl(var(--ring))"};
     outline-offset: 2px;
   }
 
@@ -1087,20 +1167,25 @@ export const FilterModalButton = styled.button<{
     switch (props.variant) {
       case "outline":
         return css`
-          border: 1px solid ${props.theme?.colors?.border || 'hsl(var(--border))'};
-          background-color: ${props.theme?.colors?.background || 'hsl(var(--background))'};
-          color: ${props.theme?.colors?.foreground || 'hsl(var(--foreground))'};
+          border: 2px solid #d1d5db;
+          background-color: #ffffff;
+          color: #374151;
           &:hover {
-            background-color: ${props.theme?.colors?.accent || 'hsl(var(--accent))'};
-            color: ${props.theme?.colors?.accentForeground || 'hsl(var(--accent-foreground))'};
+            background-color: #f9fafb;
+            border-color: #6b7280;
+            color: #1f2937;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
           }
         `;
       default:
         return css`
-          background-color: ${props.theme?.colors?.primary || 'hsl(var(--primary))'};
-          color: ${props.theme?.colors?.primaryForeground || 'hsl(var(--primary-foreground))'};
+          background-color: #1f2937;
+          color: #ffffff;
+          border: 2px solid #1f2937;
           &:hover {
-            background-color: ${props.theme?.colors?.primary ? `${props.theme.colors.primary} / 0.9` : 'hsl(var(--primary) / 0.9)'};
+            background-color: #111827;
+            border-color: #111827;
+            box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
           }
         `;
     }
@@ -1114,7 +1199,8 @@ export const FilterModalHeaderTitle = styled.h2<{ theme?: any }>`
   font-size: 20px;
   font-weight: 600;
   margin: 0;
-  color: ${({ theme }) => theme?.colors?.primaryForeground || 'hsl(var(--primary-foreground))'};
+  color: ${({ theme }) =>
+    theme?.colors?.primaryForeground || "hsl(var(--primary-foreground))"};
 `;
 
 export const FilterModalSearchIcon = styled.div<{ theme?: any }>`
@@ -1122,7 +1208,7 @@ export const FilterModalSearchIcon = styled.div<{ theme?: any }>`
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+  color: #6b7280;
   z-index: 1;
 `;
 
@@ -1132,19 +1218,19 @@ export const FilterModalSearchInput = styled.input<{ theme?: any }>`
   padding-left: 40px;
   height: 44px;
   border-radius: 12px;
-  border: 2px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
-  background: ${({ theme }) => theme?.colors?.background || 'hsl(var(--background))'};
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  color: #1f2937;
   font-size: 14px;
 
   &:focus {
-    border-color: ${({ theme }) => theme?.colors?.primary || 'hsl(var(--primary))'};
-    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     outline: none;
   }
 
   &::placeholder {
-    color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+    color: #6b7280;
   }
 `;
 
@@ -1164,41 +1250,54 @@ export const FilterModalSectionSearchIcon = styled.div<{ theme?: any }>`
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+  color: #6b7280;
   z-index: 1;
 `;
 
-export const FilterModalSectionSearchInput = styled.input<{ disabled?: boolean; theme?: any }>`
+export const FilterModalSectionSearchInput = styled.input<{
+  disabled?: boolean;
+  theme?: any;
+}>`
   width: 100%;
   padding: 8px 12px;
   padding-left: 36px;
   height: 36px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
+  border: 1px solid
+    ${({ theme }) => theme?.colors?.border || "hsl(var(--border))"};
   background: ${(props) =>
     props.disabled ? "hsl(var(--muted) / 0.1)" : "hsl(var(--muted) / 0.3)"};
   font-size: 13px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "text")};
   opacity: ${(props) => (props.disabled ? "0.6" : "1")};
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  color: ${({ theme }) =>
+    theme?.colors?.foreground || "hsl(var(--foreground))"};
 
   &:focus {
     border-color: ${({ theme, disabled }) =>
-    disabled ? theme?.colors?.border || 'hsl(var(--border))' : theme?.colors?.primary || 'hsl(var(--primary))'};
+      disabled
+        ? theme?.colors?.border || "hsl(var(--border))"
+        : theme?.colors?.primary || "hsl(var(--primary))"};
     background: ${({ theme, disabled }) =>
-    disabled ? "hsl(var(--muted) / 0.1)" : theme?.colors?.background || 'hsl(var(--background))'};
+      disabled
+        ? "hsl(var(--muted) / 0.1)"
+        : theme?.colors?.background || "hsl(var(--background))"};
     box-shadow: ${({ disabled }) =>
-    disabled ? "none" : "0 0 0 2px hsl(var(--primary) / 0.1)"};
+      disabled ? "none" : "0 0 0 2px hsl(var(--primary) / 0.1)"};
     outline: none;
   }
 
   &::placeholder {
-    color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+    color: ${({ theme }) =>
+      theme?.colors?.mutedForeground || "hsl(var(--muted-foreground))"};
     font-size: 12px;
   }
 `;
 
-export const FilterModalOptionItem = styled.div<{ isSelected?: boolean; theme?: any }>`
+export const FilterModalOptionItem = styled.div<{
+  isSelected?: boolean;
+  theme?: any;
+}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1210,8 +1309,8 @@ export const FilterModalOptionItem = styled.div<{ isSelected?: boolean; theme?: 
     props.isSelected ? "hsl(var(--primary) / 0.1)" : "transparent"};
   border: 1px solid
     ${(props) =>
-    props.isSelected ? "hsl(var(--primary) / 0.3)" : "transparent"};
-  margin-bottom: ${({ theme }) => theme?.spacing?.[1] || '4px'};
+      props.isSelected ? "hsl(var(--primary) / 0.3)" : "transparent"};
+  margin-bottom: ${({ theme }) => theme?.spacing?.[1] || "4px"};
 
   &:hover {
     background: hsl(var(--accent));
@@ -1221,13 +1320,15 @@ export const FilterModalOptionItem = styled.div<{ isSelected?: boolean; theme?: 
 
 export const FilterModalOptionText = styled.span<{ theme?: any }>`
   font-size: 14px;
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  color: ${({ theme }) =>
+    theme?.colors?.foreground || "hsl(var(--foreground))"};
 `;
 
 export const FilterModalCheckIcon = styled.svg<{ theme?: any }>`
   width: 10px;
   height: 10px;
-  color: ${({ theme }) => theme?.colors?.primaryForeground || 'hsl(var(--primary-foreground))'};
+  color: ${({ theme }) =>
+    theme?.colors?.primaryForeground || "hsl(var(--primary-foreground))"};
 `;
 
 export const FilterModalCloseButton = styled.button<{ theme?: any }>`
@@ -1241,8 +1342,9 @@ export const FilterModalCloseButton = styled.button<{ theme?: any }>`
   border: 1px solid hsl(var(--primary-foreground) / 0.2);
   cursor: pointer;
   border-radius: 12px;
-  color: ${({ theme }) => theme?.colors?.primaryForeground || 'hsl(var(--primary-foreground))'};
-  transition: ${({ theme }) => theme?.transitions?.all || 'all 0.2s ease'};
+  color: ${({ theme }) =>
+    theme?.colors?.primaryForeground || "hsl(var(--primary-foreground))"};
+  transition: ${({ theme }) => theme?.transitions?.all || "all 0.2s ease"};
 
   &:hover {
     background: hsl(var(--primary-foreground) / 0.2);
@@ -1251,13 +1353,14 @@ export const FilterModalCloseButton = styled.button<{ theme?: any }>`
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px ${({ theme }) => theme?.colors?.ring || 'hsl(var(--ring))'};
+    box-shadow: 0 0 0 2px
+      ${({ theme }) => theme?.colors?.ring || "hsl(var(--ring))"};
   }
 `;
 
 export const FilterModalSeparator = styled.div<{ theme?: any }>`
   flex-shrink: 0;
-  background: ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
+  background: ${({ theme }) => theme?.colors?.border || "hsl(var(--border))"};
   height: 1px;
   width: 100%;
 `;
@@ -1265,7 +1368,8 @@ export const FilterModalSeparator = styled.div<{ theme?: any }>`
 export const FilterModalEmptyState = styled.div<{ theme?: any }>`
   text-align: center;
   padding: 40px 20px;
-  color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+  color: ${({ theme }) =>
+    theme?.colors?.mutedForeground || "hsl(var(--muted-foreground))"};
 `;
 
 export const FilterModalEmptyIcon = styled.div`
@@ -1295,19 +1399,24 @@ export const FilterModalManualInput = styled.input<{ theme?: any }>`
   padding: 8px 12px;
   height: 36px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme?.colors?.border || 'hsl(var(--border))'};
-  background: ${({ theme }) => theme?.colors?.background || 'hsl(var(--background))'};
+  border: 1px solid
+    ${({ theme }) => theme?.colors?.border || "hsl(var(--border))"};
+  background: ${({ theme }) =>
+    theme?.colors?.background || "hsl(var(--background))"};
   font-size: 13px;
-  color: ${({ theme }) => theme?.colors?.foreground || 'hsl(var(--foreground))'};
+  color: ${({ theme }) =>
+    theme?.colors?.foreground || "hsl(var(--foreground))"};
 
   &:focus {
-    border-color: ${({ theme }) => theme?.colors?.primary || 'hsl(var(--primary))'};
+    border-color: ${({ theme }) =>
+      theme?.colors?.primary || "hsl(var(--primary))"};
     box-shadow: 0 0 0 2px hsl(var(--primary) / 0.1);
     outline: none;
   }
 
   &::placeholder {
-    color: ${({ theme }) => theme?.colors?.mutedForeground || 'hsl(var(--muted-foreground))'};
+    color: ${({ theme }) =>
+      theme?.colors?.mutedForeground || "hsl(var(--muted-foreground))"};
     font-size: 12px;
   }
 `;
@@ -1315,4 +1424,87 @@ export const FilterModalManualInput = styled.input<{ theme?: any }>`
 export const FilterModalTypeIcon = styled.div`
   font-size: 12px;
   color: hsl(var(--primary));
+`;
+
+export const FilterModalFooter = styled.div<{ theme?: any }>`
+  padding: 24px 32px;
+  border-top: 2px solid #e5e7eb;
+  flex-shrink: 0;
+  background: #ffffff;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+`;
+
+export const FilterModalButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+`;
+
+export const FilterModalButton = styled.button<{
+  variant?: "default" | "outline";
+  theme?: any;
+}>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 44px;
+  margin-bottom: 8px;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  ${(props) => {
+    switch (props.variant) {
+      case "outline":
+        return css`
+          border: 2px solid #d1d5db;
+          background-color: #ffffff;
+          color: #374151;
+          &:hover {
+            background-color: #f9fafb;
+            border-color: #6b7280;
+            color: #1f2937;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+          }
+        `;
+      default:
+        return css`
+          background-color: #1f2937;
+          color: #ffffff;
+          border: 2px solid #1f2937;
+          &:hover {
+            background-color: #111827;
+            border-color: #111827;
+            box-shadow: 0 6px 20px rgba(31, 41, 55, 0.4);
+          }
+        `;
+    }
+  }}
 `;
