@@ -26,28 +26,27 @@ const FilterGroup = styled.div``;
 
 const SelectContainer = styled.div`
   position: relative;
-  z-index: 20;
+  z-index: 10000;
+  isolation: isolate;
 `;
 
 const SelectTrigger = styled.button`
   ${flexBetween}
   height: 40px;
   width: 100%;
-  border-radius: 25px;
-  border: 2px solid #e5e7eb;
-  background-color: #ffffff;
-  padding: 0 16px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #374151;
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  border: 1px solid ${({ theme }) => theme.colors.input};
+  background-color: ${({ theme }) => theme.colors.background};
+  padding: 0 ${({ theme }) => theme.spacing[3]};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.foreground};
   cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: ${({ theme }) => theme.transitions.all};
 
   &:focus {
     outline: none;
-    border-color: #d1d5db;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.ring};
+    outline-offset: 2px;
   }
 
   &:disabled {
@@ -56,14 +55,14 @@ const SelectTrigger = styled.button`
   }
 
   &:hover {
-    border-color: #d1d5db;
-    background-color: #f9fafb;
+    background-color: ${({ theme }) => theme.colors.accent};
+    color: ${({ theme }) => theme.colors.accentForeground};
   }
 `;
 
 const SelectValue = styled.span`
-  color: #374151;
-  font-weight: 500;
+  color: ${({ theme }) => theme.colors.foreground};
+  font-weight: ${({ theme }) => theme.fontWeights.medium};
 `;
 
 const SelectContent = styled.div`
@@ -71,7 +70,7 @@ const SelectContent = styled.div`
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 30;
+  z-index: 10000;
   max-height: 384px;
   min-width: 200px;
   overflow-y: auto;
@@ -82,6 +81,7 @@ const SelectContent = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.xl};
   margin-top: ${({ theme }) => theme.spacing[1]};
   animation: fadeIn 0.2s ease-out;
+  isolation: isolate;
 
   @keyframes fadeIn {
     from {
@@ -138,6 +138,14 @@ const Button = styled.button<{
 const TimelineFilterContent = styled(SelectContent)`
   width: 380px;
   padding: ${({ theme }) => theme.spacing[4]};
+  z-index: 20000;
+  isolation: isolate;
+  position: absolute;
+
+  @media (max-width: 768px) {
+    width: 300px;
+    min-width: 280px;
+  }
 `;
 
 const TimelineFilterSection = styled.div`

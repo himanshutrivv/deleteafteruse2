@@ -165,6 +165,8 @@ export const DashboardContainer = styled.div`
   min-height: 100vh;
   background-color: hsl(var(--background));
   display: flex;
+  overflow: visible;
+  position: relative;
 `;
 
 export const MainContent = styled.div`
@@ -172,31 +174,7 @@ export const MainContent = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden;
-`;
-
-export const HorizontalLayout = styled.div`
-  display: flex;
-  flex: 1;
-  gap: 24px;
-  padding: 32px;
-  overflow: hidden;
-`;
-
-export const FilterSidebar = styled.div`
-  flex: 0 0 350px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  max-height: 100%;
-`;
-
-export const TableSection = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-width: 0;
+  overflow: visible;
 `;
 
 export const Header = styled.div`
@@ -207,10 +185,46 @@ export const Header = styled.div`
   top: 0;
   z-index: 50;
   flex-shrink: 0;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 60px;
+`;
+
+export const HeaderContent = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const DashboardTitle = styled.h1`
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: hsl(var(--foreground));
+`;
+
+export const DashboardSubtitle = styled.p`
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+`;
+
+export const MainContentLayout = styled.div`
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+  overflow: visible;
+`;
+
+export const TableSection = styled.div`
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 0;
 `;
 
 export const FilterCard = styled.div`
@@ -220,11 +234,12 @@ export const FilterCard = styled.div`
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.05),
     0 2px 4px rgba(0, 0, 0, 0.08);
+  margin-top: 24px;
+  margin-bottom: 24px;
   overflow: visible;
   transition: all 0.3s ease;
-  height: fit-content;
-  position: sticky;
-  top: 0;
+  position: relative;
+  z-index: 1;
 
   &:hover {
     box-shadow:
@@ -260,7 +275,8 @@ export const FilterContainer = styled.div<{ show: boolean }>`
   background: transparent;
   display: ${(props) => (props.show ? "block" : "none")};
   position: relative;
-  z-index: 100;
+  z-index: 1;
+  overflow: visible;
 `;
 
 export const SearchBarContainer = styled.div`
@@ -278,12 +294,20 @@ export const SearchIcon = styled.div`
 `;
 
 export const FilterGrid = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
   position: relative;
-  z-index: 100;
+  z-index: 1;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
 `;
 
 export const FilterGroup = styled.div``;
@@ -604,7 +628,7 @@ export const ErrorText = styled.div`
 // Select components with fixed hover effects
 export const SelectContainer = styled.div`
   position: relative;
-  z-index: 200;
+  z-index: 600;
 `;
 
 export const SelectTrigger = styled.button`
@@ -651,7 +675,7 @@ export const SelectContent = styled.div`
   top: 100%;
   left: 0;
   right: 0;
-  z-index: 300;
+  z-index: 1000;
   max-height: 384px;
   min-width: 200px;
   overflow-y: auto;
@@ -665,6 +689,7 @@ export const SelectContent = styled.div`
     0 4px 16px rgba(0, 0, 0, 0.08);
   margin-top: 4px;
   animation: fadeIn 0.2s ease-out;
+  isolation: isolate;
 
   &.filter-content {
     background-color: hsl(var(--card)) !important;
@@ -722,6 +747,7 @@ export const SelectItemsContainer = styled.div`
 // Table components
 export const TableContainer = styled.div`
   flex: 1;
+  padding: 32px;
   overflow: hidden;
   min-height: 0;
   display: flex;
@@ -769,7 +795,7 @@ export const TableHeaderRow = styled.tr`
   border: none;
   position: sticky;
   top: 0;
-  z-index: 5;
+  z-index: 0;
 `;
 
 export const TableHeader = styled.th`
@@ -785,7 +811,7 @@ export const TableHeader = styled.th`
   position: sticky;
   top: 0;
   backdrop-filter: blur(12px);
-  z-index: 5;
+  z-index: 0;
   border: 1px solid #1d4ed8;
   border-bottom: 2px solid #1e40af;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -863,7 +889,7 @@ export const TableEmptyStateDescription = styled.div`
 export const FilterModalBackdrop = styled.div`
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.75);
   z-index: 9998;
   animation: fadeIn 0.3s ease-out;
   opacity: 1;
@@ -884,18 +910,17 @@ export const FilterModalContainer = styled.div`
   right: 0;
   width: 33.333333%;
   height: 100vh;
-  background-color: hsl(var(--card));
+  background-color: white;
   border-left: 1px solid hsl(var(--border));
   border-top-left-radius: 16px;
   border-bottom-left-radius: 16px;
   box-shadow:
-    0 10px 80px rgba(0, 0, 0, 0.12),
-    0 4px 16px rgba(0, 0, 0, 0.08);
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 10px 25px -6px rgba(0, 0, 0, 0.1);
   z-index: 9999;
   display: flex;
   flex-direction: column;
   animation: slideInFromRight 0.3s ease-out;
-  opacity: 1;
 
   @keyframes slideInFromRight {
     from {
@@ -904,6 +929,11 @@ export const FilterModalContainer = styled.div`
     to {
       transform: translateX(0);
     }
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+    right: 5%;
   }
 `;
 
@@ -914,12 +944,14 @@ export const FilterModalHeaderContainer = styled.div`
   padding: 24px;
   border-bottom: 1px solid hsl(var(--border));
   flex-shrink: 0;
+  background-color: white;
 `;
 
 export const FilterModalContentContainer = styled.div`
   flex: 1;
   overflow-y: auto;
   padding: 24px;
+  background-color: white;
 `;
 
 export const FilterModalListItem = styled.div`
@@ -997,6 +1029,7 @@ export const FilterModalFooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  background-color: white;
 `;
 
 export const FilterModalButton = styled(Button)``;
@@ -1140,7 +1173,7 @@ export const FilterDropdownFilterGroup = styled.div``;
 
 export const FilterDropdownSelectContainer = styled.div`
   position: relative;
-  z-index: 200;
+  z-index: 500;
 `;
 
 export const FilterDropdownSelectTrigger = styled.button`
@@ -1187,7 +1220,7 @@ export const FilterDropdownSelectContent = styled.div`
   top: 100%;
   left: 0;
   right: auto;
-  z-index: 300;
+  z-index: 1001;
   max-height: 384px;
   min-width: 320px;
   max-width: calc(100vw - 32px);
@@ -1203,6 +1236,7 @@ export const FilterDropdownSelectContent = styled.div`
     0 4px 16px rgba(0, 0, 0, 0.08);
   margin-top: 4px;
   animation: fadeIn 0.2s ease-out;
+  isolation: isolate;
 
   &.filter-content {
     background-color: hsl(var(--card)) !important;
