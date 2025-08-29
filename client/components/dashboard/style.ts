@@ -1010,7 +1010,8 @@ export const TimeLineFilterButtonGrid = styled.div<{ theme?: any }>`
 export const FilterModalBackdrop = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   z-index: 1000;
   animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -1030,14 +1031,15 @@ export const FilterModalContainer = styled.div<{ theme?: any }>`
   right: 0;
   width: 440px;
   height: 100vh;
-  background: hsl(var(--card));
-  border-left: 1px solid hsl(var(--border));
+  background: white;
+  border-left: 1px solid #e5e7eb;
   border-radius: 0;
   z-index: 1001;
   display: flex;
   flex-direction: column;
   animation: slideInFromRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
 
   @keyframes slideInFromRight {
     from {
@@ -1054,19 +1056,30 @@ export const FilterModalContainer = styled.div<{ theme?: any }>`
     width: 100%;
     border-radius: 0;
   }
+
+  .dark & {
+    background: #1f2937;
+    border-left: 1px solid #374151;
+  }
 `;
 
 export const FilterModalHeader = styled.div<{ theme?: any }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: hsl(var(--card));
-  color: hsl(var(--foreground));
+  background: #f8fafc;
+  color: #1f2937;
   border-radius: 0;
   padding: 24px 32px;
-  border-bottom: 1px solid hsl(var(--border));
+  border-bottom: 1px solid #e5e7eb;
   flex-shrink: 0;
   position: relative;
+
+  .dark & {
+    background: #111827;
+    color: #f9fafb;
+    border-bottom: 1px solid #374151;
+  }
 `;
 
 export const FilterModalContent = styled.div<{ theme?: any }>`
@@ -1076,24 +1089,28 @@ export const FilterModalContent = styled.div<{ theme?: any }>`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background: hsl(var(--card));
+  background: white;
 
   &::-webkit-scrollbar {
     width: 6px;
   }
 
   &::-webkit-scrollbar-track {
-    background: hsl(var(--muted) / 0.3);
+    background: rgba(156, 163, 175, 0.3);
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: hsl(var(--muted-foreground) / 0.3);
+    background: rgba(107, 114, 128, 0.3);
     border-radius: 3px;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--muted-foreground) / 0.5);
+    background: rgba(107, 114, 128, 0.5);
+  }
+
+  .dark & {
+    background: #1f2937;
   }
 `;
 
@@ -1103,19 +1120,28 @@ export const FilterModalSearch = styled.div<{ theme?: any }>`
 `;
 
 export const FilterModalListItem = styled.div<{ theme?: any }>`
-  border: 1px solid hsl(var(--border));
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  background: hsl(var(--background));
+  background: #f9fafb;
   transition: all 0.2s ease;
   margin-bottom: 12px;
   overflow: hidden;
 
   &:hover {
-    border-color: hsl(var(--primary) / 0.3);
+    border-color: rgba(59, 130, 246, 0.3);
   }
 
   &:last-child {
     margin-bottom: 0;
+  }
+
+  .dark & {
+    background: #374151;
+    border: 1px solid #4b5563;
+
+    &:hover {
+      border-color: rgba(96, 165, 250, 0.3);
+    }
   }
 `;
 
@@ -1158,9 +1184,12 @@ export const FilterModalHeaderContent = styled.div`
 export const FilterModalTitle = styled.h3<{ hasActive: boolean }>`
   font-size: 16px;
   font-weight: ${(props) => (props.hasActive ? "600" : "500")};
-  color: ${(props) =>
-    props.hasActive ? "hsl(var(--primary))" : "hsl(var(--foreground))"};
+  color: ${(props) => (props.hasActive ? "#3b82f6" : "#1f2937")};
   margin: 0;
+
+  .dark & {
+    color: ${(props) => (props.hasActive ? "#60a5fa" : "#f9fafb")};
+  }
 `;
 
 export const FilterModalCount = styled.div<{ theme?: any }>`
@@ -1243,9 +1272,14 @@ export const FilterModalCheckbox = styled.div<{
 
 export const FilterModalFooter = styled.div<{ theme?: any }>`
   padding: 20px 32px;
-  border-top: 1px solid hsl(var(--border));
+  border-top: 1px solid #e5e7eb;
   flex-shrink: 0;
-  background: hsl(var(--card));
+  background: white;
+
+  .dark & {
+    background: #1f2937;
+    border-top: 1px solid #374151;
+  }
 `;
 
 export const FilterModalButtonContainer = styled.div`
@@ -1326,8 +1360,11 @@ export const FilterModalHeaderTitle = styled.h2<{ theme?: any }>`
   font-size: 20px;
   font-weight: 600;
   margin: 0;
-  color: ${({ theme }) =>
-    theme?.colors?.primaryForeground || "hsl(var(--primary-foreground))"};
+  color: #1f2937;
+
+  .dark & {
+    color: #f9fafb;
+  }
 `;
 
 export const FilterModalSearchIcon = styled.div<{ theme?: any }>`
@@ -1346,24 +1383,34 @@ export const FilterModalSearchInput = styled.input<{ theme?: any }>`
   padding-left: 40px;
   height: 44px;
   border-radius: 12px;
-  border: 2px solid
-    ${({ theme }) => theme?.colors?.border || "hsl(var(--border))"};
-  background: ${({ theme }) =>
-    theme?.colors?.background || "hsl(var(--background))"};
-  color: ${({ theme }) =>
-    theme?.colors?.foreground || "hsl(var(--foreground))"};
+  border: 2px solid #e5e7eb;
+  background: #ffffff;
+  color: #1f2937;
   font-size: 14px;
 
   &:focus {
-    border-color: ${({ theme }) =>
-      theme?.colors?.primary || "hsl(var(--primary))"};
-    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     outline: none;
   }
 
   &::placeholder {
-    color: ${({ theme }) =>
-      theme?.colors?.mutedForeground || "hsl(var(--muted-foreground))"};
+    color: #9ca3af;
+  }
+
+  .dark & {
+    background: #374151;
+    border: 2px solid #4b5563;
+    color: #f9fafb;
+
+    &:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+
+    &::placeholder {
+      color: #6b7280;
+    }
   }
 `;
 
@@ -1471,24 +1518,33 @@ export const FilterModalCloseButton = styled.button<{ theme?: any }>`
   justify-content: center;
   width: 40px;
   height: 40px;
-  border: none;
-  background: hsl(var(--primary-foreground) / 0.1);
-  border: 1px solid hsl(var(--primary-foreground) / 0.2);
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
   cursor: pointer;
   border-radius: 12px;
-  color: ${({ theme }) =>
-    theme?.colors?.primaryForeground || "hsl(var(--primary-foreground))"};
-  transition: ${({ theme }) => theme?.transitions?.all || "all 0.2s ease"};
+  color: #6b7280;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: hsl(var(--primary-foreground) / 0.2);
+    background: #f3f4f6;
+    color: #374151;
     transform: scale(1.05);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 2px
-      ${({ theme }) => theme?.colors?.ring || "hsl(var(--ring))"};
+    box-shadow: 0 0 0 2px #3b82f6;
+  }
+
+  .dark & {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #d1d5db;
+
+    &:hover {
+      background: #4b5563;
+      color: #f9fafb;
+    }
   }
 `;
 
